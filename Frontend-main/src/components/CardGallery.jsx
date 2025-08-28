@@ -1,6 +1,7 @@
 // components/CardGallery.jsx
 import React from "react";
 import ProductCard from "./ProductCard";
+import "./Cardgallery.css";
 
 const CardGallery = () => {
   const cardProducts = [

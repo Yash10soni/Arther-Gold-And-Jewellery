@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
+  
   name: "session",
   keys: [process.env.COOKIE_KEY],
   maxAge: 24 * 60 * 60 * 1000,
@@ -45,7 +46,10 @@ const razorpay = new Razorpay({
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`,
+    // callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`,
+    callbackURL: `${process.env.SERVER_URL}/auth/google/callback`
+
+    
   },
   async function (accessToken, refreshToken, profile, done) {
     const { email, name } = profile._json;
@@ -122,6 +126,11 @@ app.post("/create-order", async (req, res) => {
     res.status(500).send("Error creating order");
   }
 });
+// 🔹 Health Check Route (for Render)
+app.get("/healthz", (req, res) => {
+  res.status(200).send("OK");
+});
+
 
 app.listen(process.env.PORT, () => {
   console.log(`✅ Backend running on http://localhost:${process.env.PORT}`);
